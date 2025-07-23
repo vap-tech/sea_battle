@@ -1,0 +1,62 @@
+services:
+  seabattle_app:
+    container_name: seabattle_app
+    build:
+      context: .
+      dockerfile: build/app/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      seabattle_db:
+        condition: service_healthy
+    networks:
+      - seabattle_net
+    environment:
+      DB_HOST: seabattle_db
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      SOURCE: dev
+
+  seabattle_db:
+    image: mariadb:10.11
+    container_name: seabattle_db
+    restart: always
+    volumes:
+      - ./seabattle/sql/migrate:/docker-entrypoint-initdb.d
+    networks:
+      - seabattle_net
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MARIADB_USER -p$$MARIADB_PASSWORD"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    networks:
+      - seabattle_net
+    ports:
+      - "6379:6379"
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    networks:
+      - seabattle_net
+    ports:
+      - "8080:8080"
+
+networks:
+  seabattle_net:
+    name: seabattle_net
+    driver: bridge

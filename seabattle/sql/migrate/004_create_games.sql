@@ -1,0 +1,9 @@
+CREATE TABLE games (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  result ENUM('win', 'lose') NOT NULL,
+  score_delta INT NOT NULL,
+  played_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

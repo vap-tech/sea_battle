@@ -1,0 +1,25 @@
+<div class="header-left">
+    <div class="points-item">
+        <span class="item-label">Баланс:</span>
+        <span class="item-value">[% 100 %]</span>
+    </div>
+    <div class="points-item">
+        <span class="item-label">Очки:</span>
+        <span class="item-value">[% 200 %]</span>
+    </div>
+    <div class="icon-item">
+        <span class="item-icon">⚓</span>
+        <span class="icon-value">[% 99 %]</span>
+    </div>
+    <div class="icon-item">
+        <span class="item-icon">💣</span>
+        <span class="icon-value">[% 7 %]</span>
+    </div>
+</div>
+
+<nav class="nav">
+    <a href="/game">Игра</a>
+    <a href="/rating">Рейтинг</a>
+    <a href="/shop">Магазин</a>
+    <a href="/account">Личный кабинет</a>
+</nav>

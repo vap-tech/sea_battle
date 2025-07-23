@@ -1,0 +1,43 @@
+openapi: 3.0.3
+info:
+  title: Seabattle API
+  version: 1.0.0
+  description: API для получения рейтинга игроков в игре Морской бой.
+
+paths:
+  /game/rating:
+    get:
+      summary: Получить список игроков с рейтингом
+      tags:
+        - Рейтинг
+      responses:
+        '200':
+          description: Успешный ответ с рейтингом игроков
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rating:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        nickname:
+                          type: string
+                          example: "Alice"
+                          description: Имя пользователя
+                        score:
+                          type: integer
+                          example: 250
+                          description: Количество очков
+                        rank:
+                          type: string
+                          enum: [Матрос, Лейтенант, Капитан, Адмирал]
+                          description: Ранг, вычисляемый по очкам
+                        position:
+                          type: integer
+                          example: 1
+                          description: Место в общем рейтинге
+        '500':
+          description: Внутренняя ошибка сервера

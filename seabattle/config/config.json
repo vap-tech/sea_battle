@@ -1,0 +1,19 @@
+{
+  "redis": {
+    "host": "redis",
+    "port": 6379
+  },
+  "smtp": {
+    "host": "mail.nic.ru",
+    "from": "battle@v-petrenko.ru",
+    "port": 587,
+    "tls": 1,
+    "username": "battle@v-petrenko.ru",
+    "async_me": "1wELBmO@RDAzGs#Yc*"
+  },
+  "jwt": {
+    "async_me": "tjIoKyE4IX4MumGh@D"
+  },
+  "domain": "localhost",
+  "tables_dir": "./sql/migrate/"
+}

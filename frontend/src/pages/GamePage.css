@@ -1,0 +1,43 @@
+.board-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.board {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: start;
+}
+
+.active-shoot {
+    outline: 3px solid greenyellow;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid blue;
+    box-sizing: border-box;
+    line-height: 100%;
+}
+
+.red {
+    color: red;
+    background-color: #ccc;
+}
+
+.blue {
+    color: blue;
+    font-size: 30px;
+    vertical-align: middle;
+    font-weight: bolder;
+}
+
+.grey {
+    background-color: #ccc;
+}

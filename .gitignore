@@ -1,1 +1,4 @@
+.DS_store
+cover_db/
+.env
 .idea

@@ -1,0 +1,17 @@
+requires 'Mojolicious';
+requires 'Modern::Perl';
+requires 'DBIx::Class';
+requires 'DBD::MariaDB';
+requires 'Mojolicious::Plugin::TtRenderer';
+requires 'Crypt::Eksblowfish::Bcrypt';
+requires 'List::Util';
+requires 'List::MoreUtils';
+requires 'JSON';
+requires 'JSON::WebToken';
+requires 'Date::Parse';
+requires 'Crypt::URandom';
+requires 'Redis';
+requires 'Mojo::Util';
+requires 'Mojolicious::Plugin::Bcrypt';
+requires 'Mojo::Transaction';
+requires 'Mojo::SMTP::Client';

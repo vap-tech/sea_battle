@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Морской бой</title>
+    <link rel="stylesheet" href="css/layouts.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <header class="header">
+        [% IF is_authenticated %]
+            [% INCLUDE 'layouts/header_auth.tt' %]
+        [% ELSE %]
+            [% INCLUDE 'layouts/header_guest.tt' %]
+        [% END %]
+    </header>
+
+    <main>
+        [% content %]
+    </main>
+
+    <footer class="footer">
+        Интенсив perl 2025
+    </footer>
+</body>
+</html>

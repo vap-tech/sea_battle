@@ -1,0 +1,6 @@
+<nav class="nav">
+    <a href="/login">Игра</a>
+    <a href="/login">Рейтинг</a>
+    <a href="/login">Магазин</a>
+    <a href="/login">Войти</a>
+</nav>

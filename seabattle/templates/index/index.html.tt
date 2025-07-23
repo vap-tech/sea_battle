@@ -1,0 +1,16 @@
+[% WRAPPER layouts/main.html.tt %]
+    <div class="main-content">
+        <div class="game-header">
+            <h1 class="game-title">Морской бой</h1>
+            <p class="game-subtitle">онлайн игра</p>
+        </div>
+      
+        <div class="game-actions">
+            [% IF is_authenticated %]
+                <a href="/game" class="start-button">Начать игру</a>
+            [% ELSE %]
+                <a href="/login" class="start-button">Войти</a>
+            [% END %]
+        </div>
+    </div>
+[% END %]

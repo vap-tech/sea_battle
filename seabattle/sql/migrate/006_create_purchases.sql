@@ -1,0 +1,9 @@
+CREATE TABLE purchases (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  item_id INT NOT NULL,
+  bought_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (item_id) REFERENCES shop_items(id)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -1,0 +1,12 @@
+CREATE TABLE users (
+  id 			INT PRIMARY KEY AUTO_INCREMENT,
+  nickname 		VARCHAR(255) UNIQUE NOT NULL,
+  email 		VARCHAR(255) UNIQUE NOT NULL,
+  password_hash CHAR(60) NOT NULL,
+  created_at 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at 	TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  last_login 	DATETIME NULL,
+  INDEX idx_nickname (nickname),
+  INDEX idx_email (email)
+) 
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

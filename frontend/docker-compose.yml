@@ -1,0 +1,75 @@
+services:
+  frontend:
+    build: .
+    container_name: frontend2
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    command: npm run start
+
+
+  backend:
+    container_name: backend2
+    volumes:
+      - ../seabattle/:/seabattle
+    build:
+      context: ../
+      dockerfile: ./build/app/Dockerfile
+    ports:
+      - "3001:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      SOURCE: dev
+
+  db:
+    image: mariadb:10.11
+    container_name: db2
+    restart: always
+    volumes:
+      - ../seabattle/sql/migrate:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u $$MARIADB_USER -p$$MARIADB_PASSWORD" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+
+  nginx:
+    image: nginx
+    depends_on:
+      - backend
+      - frontend
+    container_name: nginx2
+    ports:
+        - "80:80"
+        - "443:443"
+    volumes:
+      #- ./frontend/build:/usr/share/nginx/html
+      - ./nginx:/etc/nginx/conf.d
+      #- ./ssl:/etc/nginx/ssl/
+
+  redis:
+    image: redis:alpine
+    container_name: redis2
+    restart: always
+    ports:
+      - "6379:6379"
+
+  adminer:
+    image: adminer
+    container_name: adminer2
+    restart: always
+    ports:
+      - "8080:8080"

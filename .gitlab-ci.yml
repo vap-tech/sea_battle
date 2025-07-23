@@ -1,0 +1,66 @@
+stages:
+  - test
+  - deploy
+
+variables:
+  DB_HOST: mariadb
+  DB_NAME: seabattle_db
+  DB_USER: admin
+  DB_PASSWORD: admin_pass
+  DB_PORT: 3306
+
+test_app:
+  stage: test
+  image: library/ubuntu:22.04
+  tags:
+    - ci_docker
+  before_script:
+    - echo "127.0.0.1 redis" >> /etc/hosts
+    - apt-get update -qq
+    - apt-get install -y -qq curl perl perl-modules-5.34 cpanminus build-essential libssl-dev libmariadb-dev mariadb-server redis-server
+
+    - redis-server --daemonize yes
+    - sleep 2
+    - redis-cli ping
+
+    # Запускаем MariaDB без systemctl
+    - mysqld_safe --skip-grant-tables --skip-networking &
+    - sleep 5
+
+    - cd ./seabattle
+    - cpanm -n --installdeps .
+
+
+    - mysql -u root -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+    - for file in ./sql/migrate/*.sql; do mysql -u root $DB_NAME < "$file"; done
+
+  script:
+    - mysql -u root $DB_NAME -e "SHOW TABLES;"
+
+    - perl -Ilib script/seabattle daemon --listen "http://*:8080" &
+    - sleep 5
+    - curl -s http://127.0.0.1:8080 | grep "Морской бой"
+    - pkill -f "seabattle daemon"
+
+
+deploy_production:
+  stage: deploy
+  image: library/ubuntu:22.04
+  tags:
+    - ci_docker
+  when: manual
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq openssh-client rsync dnsutils
+    - dig +short battle.v-petrenko.ru
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+    - chmod 600 ~/.ssh/id_ed25519
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - rsync -az --delete --exclude='.git' --exclude='.env' ./ root@battle.v-petrenko.ru:/var/www/seabattle/
+    - ssh root@battle.v-petrenko.ru "cd /var/www/seabattle/frontend && docker compose -f docker-compose.prod.yml down"
+    - ssh root@battle.v-petrenko.ru "cd /var/www/seabattle/frontend && docker compose -f docker-compose.prod.yml build --no-cache"
+    - ssh root@battle.v-petrenko.ru "cd /var/www/seabattle/frontend && docker compose -f docker-compose.prod.yml up -d"

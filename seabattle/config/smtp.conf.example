@@ -1,0 +1,8 @@
+{
+    email => {
+        address => 'real_smtp.server.com',  # Заменить на реальный SMTP
+        port    => 587,
+        timeout => 10,
+        from    => 'example@yourdomain.com',
+    }
+}
